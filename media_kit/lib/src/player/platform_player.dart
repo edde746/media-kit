@@ -514,6 +514,32 @@ class PlayerConfiguration {
   /// Learn more: https://ffmpeg.org/ffmpeg-protocols.html#Protocol-Options
   final List<String> protocolWhitelist;
 
+  /// Custom MPV configuration options for native backend.
+  ///
+  /// This allows you to pass any MPV option or property to customize player behavior.
+  /// The configuration will be applied intelligently during MPV initialization:
+  /// - Options that must be set before initialization (like `config`, `config-dir`) are applied first
+  /// - Properties that can be set after initialization are applied after MPV is ready
+  ///
+  /// Example:
+  /// ```dart
+  /// final player = Player(
+  ///   configuration: PlayerConfiguration(
+  ///     mpvConfiguration: {
+  ///       'profile': 'gpu-hq',
+  ///       'hwdec': 'auto-safe',
+  ///       'cache': 'yes',
+  ///       'demuxer-max-bytes': '512M',
+  ///     },
+  ///   ),
+  /// );
+  /// ```
+  ///
+  /// Learn more about MPV options: https://mpv.io/manual/master/#options
+  ///
+  /// Default: `{}`.
+  final Map<String, String> mpvConfiguration;
+
   /// {@macro player_configuration}
   const PlayerConfiguration({
     this.vo = 'null',
@@ -539,6 +565,7 @@ class PlayerConfiguration {
       'https',
       'crypto',
     ],
+    this.mpvConfiguration = const {},
   });
 }
 

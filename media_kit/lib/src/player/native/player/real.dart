@@ -2357,6 +2357,10 @@ class NativePlayer extends PlatformPlayer {
         }
       }
 
+      // Merge user-provided MPV configuration into options.
+      // These will be applied before mpv_initialize().
+      options.addAll(configuration.mpvConfiguration);
+
       ctx = await Initializer(mpv).create(
         _handler,
         options: options,
@@ -2440,6 +2444,10 @@ class NativePlayer extends PlatformPlayer {
         properties['vo'] = 'null';
         properties['ao'] = 'null';
       }
+
+      // Merge user-provided MPV configuration into properties.
+      // These will override any default properties set above.
+      properties.addAll(configuration.mpvConfiguration);
 
       await Future.wait(properties.entries
           .map((entry) => _setPropertyString(entry.key, entry.value)));
