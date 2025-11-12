@@ -72,8 +72,12 @@ Frameworks/*.xcframework: .cache/xcframeworks/all-frameworks.done
 Frameworks/.symlinks: Frameworks/*.xcframework
 	rm -rf Frameworks/.symlinks
 	mkdir -p Frameworks/.symlinks/mpv
-	mv Frameworks/Libmpv.xcframework Frameworks/Mpv.xcframework
-	find Frameworks/Mpv.xcframework -name "Libmpv.framework" -execdir sh -c 'mv Libmpv.framework Mpv.framework && mv Mpv.framework/Libmpv Mpv.framework/Mpv' \;
+	# Rename Libmpv.xcframework to Mpv.xcframework and update internal framework names
+	if [ -d Frameworks/Libmpv.xcframework ]; then \
+		mv Frameworks/Libmpv.xcframework Frameworks/Mpv.xcframework; \
+		echo "  Renaming Libmpv.framework to Mpv.framework inside XCFramework..."; \
+		find Frameworks/Mpv.xcframework -name "Libmpv.framework" -execdir sh -c 'mv Libmpv.framework Mpv.framework && mv Mpv.framework/Libmpv Mpv.framework/Mpv' \; 2>/dev/null || true; \
+	fi
 	${SED} -i ${SED_INPLACE_FLAG} 's/\r$$//g' create_framework_symlinks.sh # remove CRLF line terminator added by Flutter packaging (https://github.com/media-kit/media-kit/issues/338)
 	sh create_framework_symlinks.sh Frameworks/Mpv.xcframework Frameworks/.symlinks/mpv
 
