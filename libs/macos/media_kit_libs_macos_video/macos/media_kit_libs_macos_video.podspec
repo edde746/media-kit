@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
   s.dependency 'FlutterMacOS'
 
   s.vendored_frameworks = 'Frameworks/*.xcframework'
+  s.vendored_libraries = 'Frameworks/libMoltenVK.a'
 
   s.platform = :osx, '10.9'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }

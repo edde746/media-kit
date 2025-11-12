@@ -26,6 +26,21 @@ abstract class NativeLibrary {
     return _resolved!;
   }
 
+  /// Opens the resolved libmpv dynamic library.
+  /// This method handles both external libraries and process-based loading.
+  static DynamicLibrary open() {
+    if (_resolved == null) {
+      throw Exception(
+        'MediaKit.ensureInitialized must be called before using any API from package:media_kit.',
+      );
+    }
+    if (_resolved == 'DynamicLibrary.process()') {
+      return DynamicLibrary.process();
+    } else {
+      return DynamicLibrary.open(_resolved!);
+    }
+  }
+
   /// Initializes the |NativeLibrary| class for usage.
   /// This method discovers & loads the libmpv shared library. It is generally present with the name `libmpv-2.dll` on Windows & `libmpv.so` on GNU/Linux.
   /// The [libmpv] parameter can be used to manually specify the path to the libmpv shared library.
@@ -76,6 +91,14 @@ abstract class NativeLibrary {
           return;
         } catch (_) {}
       }
+      // For macOS and iOS, try to use the current process if static frameworks are used
+      if (Platform.operatingSystem == 'macos' || Platform.operatingSystem == 'ios') {
+        try {
+          DynamicLibrary.process();
+          _resolved = 'DynamicLibrary.process()';
+          return;
+        } catch (_) {}
+      }
       // If the dynamic library is not loaded, throw an [Exception].
       if (_resolved == null) {
         throw Exception(
@@ -85,9 +108,9 @@ abstract class NativeLibrary {
             'linux':
                 'Cannot find libmpv at the usual places. Depending upon your distribution, you can install the libmpv package to make shared library available globally. On Debian or Ubuntu based systems, you can install it with: apt install libmpv-dev.',
             'macos':
-                'Cannot find Mpv.framework/Mpv. Please ensure it\'s presence in the Frameworks folder of the application.',
+                'Cannot find Mpv.framework/Mpv. Please ensure it\'s presence in the Frameworks folder of the application or that mpv is statically linked.',
             'ios':
-                'Cannot find Mpv.framework/Mpv. Please ensure it\'s presence in the Frameworks folder of the application.',
+                'Cannot find Mpv.framework/Mpv. Please ensure it\'s presence in the Frameworks folder of the application or that mpv is statically linked.',
             'android':
                 'Cannot find libmpv.so. Please ensure it\'s presence in the APK.',
           }[Platform.operatingSystem]!,

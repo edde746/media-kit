@@ -23,7 +23,7 @@ Future<HashSet<String>> queryDecoders(int handle) {
     }
 
     NativeLibrary.ensureInitialized();
-    final mpv = MPV(DynamicLibrary.open(NativeLibrary.path));
+    final mpv = MPV(NativeLibrary.open());
 
     if (_decoders.isEmpty) {
       final name = 'decoder-list'.toNativeUtf8();

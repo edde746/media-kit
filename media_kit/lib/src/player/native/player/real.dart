@@ -51,7 +51,7 @@ void nativeEnsureInitialized({String? libmpv}) {
     print('$tag Disposing:\n${references.map((e) => e.address).join('\n')}');
 
     // I can only get quit to work; [mpv_terminate_destroy] causes direct crash.
-    final mpv = generated.MPV(DynamicLibrary.open(NativeLibrary.path));
+    final mpv = generated.MPV(NativeLibrary.open());
     final cmd = 'quit'.toNativeUtf8();
     try {
       for (final reference in references) {
@@ -74,7 +74,7 @@ void nativeEnsureInitialized({String? libmpv}) {
 class NativePlayer extends PlatformPlayer {
   /// {@macro native_player}
   NativePlayer({required super.configuration})
-      : mpv = generated.MPV(DynamicLibrary.open(NativeLibrary.path)) {
+      : mpv = generated.MPV(NativeLibrary.open()) {
     future = _create()
       ..then((_) {
         try {

@@ -28,16 +28,18 @@ Pod::Spec.new do |s|
   s.dependency         'FlutterMacOS'
 
   if mku.libs_found
+    s.dependency         'media_kit_libs_macos_video'
+
     # Define paths to frameworks dir
-    framework_search_paths_macosx = sprintf('$(PROJECT_DIR)/../Flutter/ephemeral/.symlinks/plugins/%s/macos/Frameworks/.symlinks/mpv/macos', mku.libs_package)
+    framework_search_paths_macosx = sprintf('$(PROJECT_DIR)/../Flutter/ephemeral/.symlinks/plugins/%s/macos/Frameworks', mku.libs_package)
 
     s.source_files        = 'Classes/plugin/**/*.swift', 'Headers/**/*.h'
     s.pod_target_xcconfig = {
       'DEFINES_MODULE'                      => 'YES',
       'GCC_WARN_INHIBIT_ALL_WARNINGS'       => 'YES',
       'GCC_PREPROCESSOR_DEFINITIONS'        => '"$(inherited)" GL_SILENCE_DEPRECATION COREVIDEO_SILENCE_GL_DEPRECATION',
-      'FRAMEWORK_SEARCH_PATHS[sdk=macosx*]' => sprintf('"$(inherited)" "%s"', framework_search_paths_macosx),
-      'OTHER_LDFLAGS'                       => '"$(inherited)" -framework Mpv',
+      'OTHER_LDFLAGS'                       => '"$(inherited)" -framework Mpv -framework Libavcodec -framework Libavdevice -framework Libavfilter -framework Libavformat -framework Libavutil -framework Libswresample -framework Libswscale -framework Libass -framework Libuchardet -lMoltenVK -framework Libplacebo -framework Libfreetype -framework Libfribidi -framework Libharfbuzz -framework gmp -framework Libuavs3d -framework Libshaderc_combined -framework Libluajit -framework Libunibreak -framework gnutls -framework nettle -framework hogweed -framework lcms2 -framework Libdav1d -framework Libdovi -framework Libbluray -lxml2 -lz -liconv -lbz2 -framework CoreText -framework ApplicationServices -framework Metal -framework MetalKit -framework CoreMedia -framework VideoToolbox -framework AudioToolbox -framework Foundation -framework CoreFoundation -framework Security -framework SystemConfiguration -framework Network',
+      'LIBRARY_SEARCH_PATHS[sdk=macosx*]' => '"$(inherited)" "$(PROJECT_DIR)/../Flutter/ephemeral/.symlinks/plugins/media_kit_libs_macos_video/macos/Frameworks"',
     }
   else
     s.source_files        = 'Classes/stub/**/*.swift'
