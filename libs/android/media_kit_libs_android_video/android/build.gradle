@@ -58,10 +58,10 @@ task downloadDependencies(type: Exec) {
 
         // Download all *.jar dependencies & verify their MD5 checksums.
         def filesToDownload = [
-            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/1/default-arm64-v8a.jar", "md5": "4d6c0c2ced1a8cff9f7808131f4b7bd3", "destination": file("$buildDir/1/default-arm64-v8a.jar")],
-            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/1/default-armeabi-v7a.jar", "md5": "c6b1769c5f9c93ddfdfd576171ff7f38", "destination": file("$buildDir/1/default-armeabi-v7a.jar")],
-            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/1/default-x86_64.jar", "md5": "3e9693116257c2cf3eeb73661d110609", "destination": file("$buildDir/1/default-x86_64.jar")],
-            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/1/default-x86.jar", "md5": "f324d80ffa4d9c3d82d28c1abfafd959", "destination": file("$buildDir/1/default-x86.jar")]
+            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/3/default-arm64-v8a.jar", "md5": "4d6c0c2ced1a8cff9f7808131f4b7bd3", "destination": file("$buildDir/1/default-arm64-v8a.jar")],
+            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/3/default-armeabi-v7a.jar", "md5": "c6b1769c5f9c93ddfdfd576171ff7f38", "destination": file("$buildDir/1/default-armeabi-v7a.jar")],
+            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/3/default-x86_64.jar", "md5": "3e9693116257c2cf3eeb73661d110609", "destination": file("$buildDir/1/default-x86_64.jar")],
+            ["url": "https://github.com/edde746/libmpv-android-build/releases/download/3/default-x86.jar", "md5": "f324d80ffa4d9c3d82d28c1abfafd959", "destination": file("$buildDir/1/default-x86.jar")]
         ]
 
         filesToDownload.each { fileInfo ->
