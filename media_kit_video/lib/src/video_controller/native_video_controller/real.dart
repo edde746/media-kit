@@ -153,13 +153,20 @@ class NativeVideoController extends PlatformVideoController {
     // Store the [NativeVideoController] in the [_controllers].
     _controllers[handle] = controller;
 
-    await controller.setProperties(
-      {
-        'vo': configuration.vo!,
-        'hwdec': configuration.hwdec!,
-        'vid': 'auto',
-      },
-    );
+    final properties = <String, String>{
+      'vo': configuration.vo!,
+      'hwdec': configuration.hwdec!,
+      'vid': 'auto',
+    };
+
+    // OpenGL ES on iOS is limited to 8-bit textures. Force BGRA output from
+    // VideoToolbox/mpv so 10-bit sources stay compatible even without libmpv patch.
+    if (Platform.isIOS && configuration.enableHardwareAcceleration) {
+      properties['videotoolbox-format'] = 'bgra';
+      properties['hwdec-image-format'] = 'bgra';
+    }
+
+    await controller.setProperties(properties);
 
     // Wait until first texture ID is received.
     // We are not waiting on the native-side itself because it will block the UI thread.
