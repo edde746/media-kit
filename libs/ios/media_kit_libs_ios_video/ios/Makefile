@@ -1,6 +1,6 @@
 all: Frameworks/*.xcframework Frameworks/.symlinks
 
-MPV_XCFRAMEWORKS_VERSION=0.40.0-n8.0
+MPV_XCFRAMEWORKS_VERSION=0.40.0-fix-9
 
 TAR=tar
 TAR_WILDCARDS_FLAG := $(shell ${TAR} --version 2>&1 | grep -q 'GNU' && echo "--wildcards" || echo "")
@@ -39,7 +39,7 @@ EXTRA_FRAMEWORKS = \
 	@echo "Downloading core MPVKit frameworks..."
 	@for framework in $(MPVKIT_FRAMEWORKS); do \
 		echo "  Downloading $$framework.xcframework..."; \
-		curl -L "https://github.com/mpvkit/MPVKit/releases/download/${MPV_XCFRAMEWORKS_VERSION}/$$framework.xcframework.zip" \
+		curl -L "https://github.com/edde746/MPVKit/releases/download/${MPV_XCFRAMEWORKS_VERSION}/$$framework-GPL.xcframework.zip" \
 			-o .cache/xcframeworks/$$framework.zip.tmp; \
 		mv .cache/xcframeworks/$$framework.zip.tmp .cache/xcframeworks/$$framework.xcframework.zip; \
 	done
