@@ -70,8 +70,8 @@ class AndroidVideoController extends PlatformVideoController {
       );
       // Instead of seeking to the start (Duration.zero), seek to the current playback position
       // without jumping the user to the start of the media.
-      final currentPosition = player.state.position;
-      await player.seek(currentPosition);
+      // final currentPosition = player.state.position;
+      // await player.seek(currentPosition);
     });
   }
 
